@@ -1,7 +1,7 @@
 import tensorflow as tf
-from os import path
+from os import path, getcwd
 
-BASEDIR = "/Users/Reuben/Development/tf-export-test"
+BASEDIR = getcwd()
 
 input_graphdef = path.join(BASEDIR, "graph-def", "quantized_graph.pb")
 
@@ -13,9 +13,13 @@ with graph.as_default():
         pb.ParseFromString(fin.read()) # binary
     imports = tf.import_graph_def(pb, name="")
     
-    # print("Ops: {}".format([op.name for op in graph.get_operations()]))
-
+    x = graph.get_tensor_by_name("x:0")
+    x_len = graph.get_tensor_by_name("x_len:0")
     y = graph.get_tensor_by_name("y:0")
     
     sess = tf.Session()
-    print("23 * 0.1 + 0.3 = {}".format(sess.run(y, feed_dict={"x:0": [23]})))
+    pred = sess.run(y, feed_dict={
+        x: [[[2.0,2.1,2.2,2.3,2.4,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.]]],
+        x_len: [5]
+    })
+    print("prediction: {}".format("linear" if pred == 0 else "random"))
