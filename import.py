@@ -13,13 +13,8 @@ with graph.as_default():
         pb.ParseFromString(fin.read()) # binary
     imports = tf.import_graph_def(pb, name="")
     
-    x = graph.get_tensor_by_name("x:0")
-    x_len = graph.get_tensor_by_name("x_len:0")
-    y = graph.get_tensor_by_name("y:0")
+    y = graph.get_tensor_by_name("y")
     
     sess = tf.Session()
-    pred = sess.run(y, feed_dict={
-        x: [[[2.0,2.1,2.2,2.3,2.4,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.]]],
-        x_len: [5]
-    })
-    print("prediction: {}".format("linear" if pred == 0 else "random"))
+    result = sess.run(y)
+    print("result: {}".format(result))
