@@ -2,7 +2,7 @@
 import tensorflow as tf
 from os import path
 
-cell = tf.contrib.rnn.LSTMCell(num_units=64)
+cell = tf.contrib.rnn.BasicLSTMCell(num_units=64)
 
 outputs, _ = tf.nn.dynamic_rnn(
     cell=cell,
