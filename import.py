@@ -13,7 +13,7 @@ with graph.as_default():
         pb.ParseFromString(fin.read()) # binary
     imports = tf.import_graph_def(pb, name="")
     
-    y = graph.get_tensor_by_name("y")
+    y = graph.get_tensor_by_name("y:0")
     
     sess = tf.Session()
     result = sess.run(y)
